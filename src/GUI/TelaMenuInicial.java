@@ -90,6 +90,7 @@ public class TelaMenuInicial extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         btn_salvar_anotacao = new javax.swing.JButton();
         btn_historico = new javax.swing.JButton();
+        btn_sair = new javax.swing.JButton();
         painel1 = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
         ScrollPaneTabela = new javax.swing.JScrollPane();
@@ -151,7 +152,7 @@ public class TelaMenuInicial extends javax.swing.JFrame {
         menuBarRadio2 = new javax.swing.JRadioButtonMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Tela Principal");
+        setTitle("MENU");
         setMaximumSize(new java.awt.Dimension(1399, 729));
         setMinimumSize(new java.awt.Dimension(760, 550));
         setResizable(false);
@@ -225,9 +226,17 @@ public class TelaMenuInicial extends javax.swing.JFrame {
                     .addComponent(btn_historico, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_salvar_anotacao, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        btn_sair.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
+        btn_sair.setText("SAIR");
+        btn_sair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_sairActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout painelInicialLayout = new javax.swing.GroupLayout(painelInicial);
         painelInicial.setLayout(painelInicialLayout);
@@ -237,19 +246,28 @@ public class TelaMenuInicial extends javax.swing.JFrame {
                 .addGroup(painelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(painelInicialLayout.createSequentialGroup()
                         .addGap(193, 193, 193)
-                        .addComponent(lbl_bemVindo))
+                        .addComponent(lbl_bemVindo)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(painelInicialLayout.createSequentialGroup()
-                        .addGap(128, 128, 128)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(137, Short.MAX_VALUE))
+                        .addGap(128, 662, Short.MAX_VALUE)
+                        .addComponent(btn_sair)))
+                .addContainerGap())
+            .addGroup(painelInicialLayout.createSequentialGroup()
+                .addGap(128, 128, 128)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         painelInicialLayout.setVerticalGroup(
             painelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelInicialLayout.createSequentialGroup()
+            .addGroup(painelInicialLayout.createSequentialGroup()
                 .addGap(50, 50, 50)
-                .addComponent(lbl_bemVindo, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(painelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btn_sair)
+                    .addGroup(painelInicialLayout.createSequentialGroup()
+                        .addComponent(lbl_bemVindo, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(23, 23, 23)))
                 .addContainerGap(40, Short.MAX_VALUE))
         );
 
@@ -1165,6 +1183,19 @@ public class TelaMenuInicial extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "OUTROS BOTÕES, TALVEZ.");
     }//GEN-LAST:event_btn_outros_botoes_talvezActionPerformed
 
+    private void btn_sairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_sairActionPerformed
+        int resp = JOptionPane.showConfirmDialog(null, "REALMENTE DESEJA SAIR?");
+        switch (resp){
+            case 0:
+                this.dispose();
+                TelaLogin t1 = new TelaLogin();
+                t1.setVisible(true);
+                break;
+            default:
+                break;
+        }
+    }//GEN-LAST:event_btn_sairActionPerformed
+
   
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -1214,6 +1245,7 @@ public class TelaMenuInicial extends javax.swing.JFrame {
     private javax.swing.JButton btn_historico;
     private javax.swing.JButton btn_outros_botoes_talvez;
     private javax.swing.JButton btn_pesquise;
+    private javax.swing.JButton btn_sair;
     private javax.swing.JButton btn_salvar_anotacao;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
