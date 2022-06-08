@@ -27,9 +27,8 @@ public class ManipuladorDB {
         try{this.conexao.close();System.out.println("desconexao bem sucedida!");}
         catch(SQLException e){System.out.println("Erro: "+e);}
     }   
-    
-    // CRUD para evento, residente, prestador, servico, porteiro
 
+    // consulta geral
     public ArrayList<Object[]> consultarDados(String tabela){
 
         String sql = "SELECT * FROM "+tabela;
@@ -60,7 +59,6 @@ public class ManipuladorDB {
                         
                         // passando valores do arraylist para o array de objetos
                         c1 = listatemp.toArray();
-                        // for (int x=0;x<listatemp.size();x++){c1[x] = listatemp.get(x);}
                         listaRetornada.add(c1);
                     }
                     
@@ -79,6 +77,7 @@ public class ManipuladorDB {
         }
     } 
     
+    // consulta exata
     public ArrayList<Object[]> consultarDadosAdv(String tabela,String param[],String valor[]){
 
         String sqlParte2="", sql;
@@ -144,6 +143,7 @@ public class ManipuladorDB {
         }
     }
 
+    // consulta aproximada
     public ArrayList<Object[]> consultarDadosAdv(String tabela,String param[],String valor[], boolean like){
 
         String sqlParte2="", sql;

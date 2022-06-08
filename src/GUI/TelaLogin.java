@@ -30,6 +30,7 @@ public class TelaLogin extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("LOGIN");
         setMaximumSize(new java.awt.Dimension(646, 426));
+        setName("framePrincipal"); // NOI18N
         setPreferredSize(new java.awt.Dimension(640, 420));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -140,20 +141,25 @@ public class TelaLogin extends javax.swing.JFrame {
         
         //checando se o usuário é um administrador ou porteiro
         if (this.Slider_porteiro_adm.getValue() == 0){
+            // checa se o cadastro existe e adquire valor true ou false dependendo do resultado
             boolean resp = this.mdb.checarLoginPorteiro(this.txt_nome.getText(),String.valueOf(this.txt_senha.getPassword()) );
+            // checa qual o valor (caso porteiro)
             if(resp){
+                // popup feliz
                 JOptionPane.showMessageDialog(null, "LOGADO COM SUCESSO\n BEM VINDO PORTEIRO!");
                 this.dispose();
                 TelaMenuInicial menu1 = new TelaMenuInicial();
                 menu1.setVisible(true);}
             else{JOptionPane.showMessageDialog(null, "CADASTRO NÃO RECONHECIDO\nTENTE NOVAMENTE!");}
         } else{
+            // chca qual o valor (caso admin)
             boolean resp = this.mdb.checarLoginAdm(this.txt_nome.getText(),String.valueOf(this.txt_senha.getPassword()) );
             if(resp){
                 JOptionPane.showMessageDialog(null, "LOGADO COM SUCESSO\n BEM VINDO ADMINISTRADOR!");
                 this.dispose();
                 TelaMenuInicial menu1 = new TelaMenuInicial();
                 menu1.setVisible(true);}
+            // popup triste
             else{JOptionPane.showMessageDialog(null, "CADASTRO NÃO RECONHECIDO\nTENTE NOVAMENTE!");}
         }
     }//GEN-LAST:event_btn_entrarActionPerformed
