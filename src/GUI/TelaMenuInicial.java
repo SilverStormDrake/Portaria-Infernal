@@ -192,7 +192,7 @@ public class TelaMenuInicial extends javax.swing.JFrame {
         });
 
         btn_historico.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
-        btn_historico.setText("HISTÓRICO");
+        btn_historico.setText("ABRIR NOTAS");
         btn_historico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_historicoActionPerformed(evt);
@@ -206,12 +206,12 @@ public class TelaMenuInicial extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 463, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(24, 24, 24)
                         .addComponent(btn_historico)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 227, Short.MAX_VALUE)
                         .addComponent(btn_salvar_anotacao)
                         .addGap(33, 33, 33)))
                 .addContainerGap())
@@ -1109,7 +1109,7 @@ public class TelaMenuInicial extends javax.swing.JFrame {
         coiso +="\n^"+(String)data_e_hora.format(DateTimeFormatter.ISO_DATE_TIME).replace("T", " ")+"\n\n";
         
         try {
-            // escrevendo informações no arquivo.txt no método APPEND (apenas inserção, sem reescrita total)
+            // escrevendo informações no arquivo.txt no método WRITE (inserção com reescrita total)
             Files.write(this.arquivoAnotacao, coiso.getBytes(), StandardOpenOption.WRITE);
             JOptionPane.showMessageDialog(null, "SALVO COM SUCESSO!");
         }

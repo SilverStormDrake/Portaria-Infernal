@@ -83,25 +83,26 @@ public class Main {
         
         //declaração de variáveis
         File arquivo = new File("src");
-        String arqF = arquivo.getAbsolutePath();
-        Path arquivo1 = Paths.get(arqF+"\\Banco\\anotacao.txt");
+        String arqF = arquivo.getAbsolutePath(); // pegando o caminho absoluto
+        Path arquivo1 = Paths.get(arqF+"\\Banco\\anotacao.txt"); // juntando o caminho absoluto ao relativo
         Scanner entrada = new Scanner(System.in);
-        String coiso; //forma;
+        String coiso;
+        // lista que vai ser utilizada para ler as linhas do arquivo
         List<String> listinha;
         LocalDateTime data_e_hora = LocalDateTime.now();
         
         System.out.print("Diga como que você está sentindo hoje :)\n> ");
         coiso = entrada.nextLine();
-        coiso +="\n^"+(String)data_e_hora.format(DateTimeFormatter.ISO_DATE_TIME)+"\n\n";
+        // formatação da string e adição de data e hora formatada para String
+        coiso +="\n^"+(String)data_e_hora.format(DateTimeFormatter.ISO_DATE_TIME).replace("T", " ")+"\n\n";
         
-        //forma = "||"+nome+"||"+senha+"||\n";
-        //System.out.println(arquivo1);
         try {
+            // escrevendo informações no arquivo.txt no método APPEND (apenas inserção, sem reescrita total)
             Files.write(arquivo1, coiso.getBytes(), StandardOpenOption.APPEND);
             System.out.println("Suas notas foram guardadas para te lembrar dpois ^-^");
-            listinha = Files.readAllLines(arquivo1);
+            listinha = Files.readAllLines(arquivo1); // percorrendo linhas do arquivo
             for (String e:listinha){
-                System.out.println(e);
+                System.out.println(e); // printando linhas
             }
             
         }
