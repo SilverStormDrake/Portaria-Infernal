@@ -2,12 +2,17 @@ package Front;
 
 // imports
 import DAO.ManipuladorDB;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.*;
+import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
-        teste3();
+        teste06();
     }
     // testes
     
@@ -71,4 +76,28 @@ public class Main {
         mbd.deletarRegistro("tb_residente", param, valor);
         mbd.desconectar();
     }
+    
+    static void teste06(){ // adicionando informações em um arquivo de texto
+
+        File arquivo = new File("src");
+        String arqF = arquivo.getAbsolutePath();
+        //declaração de variáveis
+        Path arquivo1 = Paths.get(arqF+"\\Banco\\anotacao.txt");
+        Scanner entrada = new Scanner(System.in);
+        String nome, senha, forma;
+        
+        System.out.print("insira seu nome: ");
+        nome = entrada.nextLine();
+        System.out.print("insira sua senha: ");
+        senha = entrada.nextLine().trim();
+
+        forma = "||"+nome+"||"+senha+"||\n";
+        System.out.println(arquivo1);
+        try {Files.write(arquivo1, forma.getBytes(), StandardOpenOption.APPEND);}
+        catch (IOException e) {System.out.println("erro: "+e);}
+        catch (Exception e) {System.out.println("erro: "+e);}
+
+        entrada.close();
+    }
+    
 }
