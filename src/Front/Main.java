@@ -2,12 +2,19 @@ package Front;
 
 // imports
 import DAO.ManipuladorDB;
+import java.time.LocalDateTime;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.*;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
-        teste3();
+        teste06();
     }
     // testes
     
@@ -71,4 +78,38 @@ public class Main {
         mbd.deletarRegistro("tb_residente", param, valor);
         mbd.desconectar();
     }
+    
+    static void teste06(){ // adicionando informações em um arquivo de texto
+        
+        //declaração de variáveis
+        File arquivo = new File("src");
+        String arqF = arquivo.getAbsolutePath(); // pegando o caminho absoluto
+        Path arquivo1 = Paths.get(arqF+"\\Banco\\anotacao.txt"); // juntando o caminho absoluto ao relativo
+        Scanner entrada = new Scanner(System.in);
+        String coiso;
+        // lista que vai ser utilizada para ler as linhas do arquivo
+        List<String> listinha;
+        LocalDateTime data_e_hora = LocalDateTime.now();
+        
+        System.out.print("Diga como que você está sentindo hoje :)\n> ");
+        coiso = entrada.nextLine();
+        // formatação da string e adição de data e hora formatada para String
+        coiso +="\n^"+(String)data_e_hora.format(DateTimeFormatter.ISO_DATE_TIME).replace("T", " ")+"\n\n";
+        
+        try {
+            // escrevendo informações no arquivo.txt no método APPEND (apenas inserção, sem reescrita total)
+            Files.write(arquivo1, coiso.getBytes(), StandardOpenOption.APPEND);
+            System.out.println("Suas notas foram guardadas para te lembrar dpois ^-^");
+            listinha = Files.readAllLines(arquivo1); // percorrendo linhas do arquivo
+            for (String e:listinha){
+                System.out.println(e); // printando linhas
+            }
+            
+        }
+        catch (IOException e) {System.out.println("erro: "+e);}
+        catch (Exception e) {System.out.println("erro: "+e);}
+
+        entrada.close();
+    }
+    
 }

@@ -1,8 +1,20 @@
 package GUI;
 
 import DAO.ManipuladorDB;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -10,6 +22,9 @@ import javax.swing.table.DefaultTableModel;
 public class TelaMenuInicial extends javax.swing.JFrame {
 
     // atributos
+    private File arquivo = new File("src");
+    private String arqF = arquivo.getAbsolutePath(); // pegando o caminho absoluto
+    private Path arquivoAnotacao = Paths.get(this.arqF+"\\Banco\\anotacao.txt"); // juntando o caminho absoluto ao relativo
     private ButtonGroup grupoPaineis = new ButtonGroup(); 
     private ManipuladorDB dbm;
     private String[][] colunas = {
@@ -60,6 +75,7 @@ public class TelaMenuInicial extends javax.swing.JFrame {
         this.setSubPaineisInsercaoInvisiveis();
         this.painelInicial.setVisible(true);
         this.painel_inserirCorrespondencia.setVisible(true);
+        this.ComboBoxTabelas.setSelectedIndex(0);
                
     }
 
@@ -69,17 +85,12 @@ public class TelaMenuInicial extends javax.swing.JFrame {
 
         painelInicial = new javax.swing.JPanel();
         lbl_bemVindo = new javax.swing.JLabel();
-        TabbedPaneInicio = new javax.swing.JTabbedPane();
-        painelAtivReccentes = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        txt_area_ativRecentes = new javax.swing.JTextArea();
-        painelNovidades = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        txt_area_novidades = new javax.swing.JTextArea();
-        painelAtualizacao = new javax.swing.JPanel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        txt_area_atualizacao = new javax.swing.JTextArea();
-        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtArea_anotacao = new javax.swing.JTextArea();
+        jLabel8 = new javax.swing.JLabel();
+        btn_salvar_anotacao = new javax.swing.JButton();
+        btn_historico = new javax.swing.JButton();
         painel1 = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
         ScrollPaneTabela = new javax.swing.JScrollPane();
@@ -144,10 +155,10 @@ public class TelaMenuInicial extends javax.swing.JFrame {
         setTitle("Tela Principal");
         setMaximumSize(new java.awt.Dimension(1399, 729));
         setMinimumSize(new java.awt.Dimension(760, 550));
-        setPreferredSize(new java.awt.Dimension(760, 550));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        painelInicial.setForeground(new java.awt.Color(255, 255, 255));
         painelInicial.setToolTipText("");
         painelInicial.setMinimumSize(new java.awt.Dimension(740, 550));
         painelInicial.setOpaque(false);
@@ -159,112 +170,88 @@ public class TelaMenuInicial extends javax.swing.JFrame {
         lbl_bemVindo.setText("BEM VINDO DE VOLTA, PORTEIRO(A)!");
         lbl_bemVindo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        txt_area_ativRecentes.setEditable(false);
-        txt_area_ativRecentes.setColumns(20);
-        txt_area_ativRecentes.setRows(5);
-        txt_area_ativRecentes.setTabSize(4);
-        txt_area_ativRecentes.setText("\n*(31/05/22) - registro de porteiro[CLEITINHO] novo no sistema.\n\n*(30/05/22) - registro de morador[ZEZÃO DAMASSA] novo no sistema.");
-        jScrollPane2.setViewportView(txt_area_ativRecentes);
+        jPanel2.setPreferredSize(new java.awt.Dimension(246, 222));
 
-        javax.swing.GroupLayout painelAtivReccentesLayout = new javax.swing.GroupLayout(painelAtivReccentes);
-        painelAtivReccentes.setLayout(painelAtivReccentesLayout);
-        painelAtivReccentesLayout.setHorizontalGroup(
-            painelAtivReccentesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(painelAtivReccentesLayout.createSequentialGroup()
+        txtArea_anotacao.setColumns(20);
+        txtArea_anotacao.setForeground(new java.awt.Color(102, 102, 102));
+        txtArea_anotacao.setRows(5);
+        txtArea_anotacao.setTabSize(4);
+        txtArea_anotacao.setToolTipText("");
+        jScrollPane1.setViewportView(txtArea_anotacao);
+
+        jLabel8.setFont(new java.awt.Font("Rockwell", 0, 14)); // NOI18N
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setText("SUAS ANOTAÇÕES");
+
+        btn_salvar_anotacao.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
+        btn_salvar_anotacao.setText("SALVAR");
+        btn_salvar_anotacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_salvar_anotacaoActionPerformed(evt);
+            }
+        });
+
+        btn_historico.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
+        btn_historico.setText("ABRIR NOTAS");
+        btn_historico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_historicoActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 482, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(btn_historico)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 227, Short.MAX_VALUE)
+                        .addComponent(btn_salvar_anotacao)
+                        .addGap(33, 33, 33)))
                 .addContainerGap())
         );
-        painelAtivReccentesLayout.setVerticalGroup(
-            painelAtivReccentesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(painelAtivReccentesLayout.createSequentialGroup()
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_historico, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_salvar_anotacao, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE)
                 .addContainerGap())
         );
-
-        TabbedPaneInicio.addTab("ATIVIDADES RECENTES", painelAtivReccentes);
-
-        txt_area_novidades.setColumns(20);
-        txt_area_novidades.setRows(5);
-        jScrollPane3.setViewportView(txt_area_novidades);
-
-        javax.swing.GroupLayout painelNovidadesLayout = new javax.swing.GroupLayout(painelNovidades);
-        painelNovidades.setLayout(painelNovidadesLayout);
-        painelNovidadesLayout.setHorizontalGroup(
-            painelNovidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(painelNovidadesLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 482, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        painelNovidadesLayout.setVerticalGroup(
-            painelNovidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(painelNovidadesLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        TabbedPaneInicio.addTab("AGENDA", painelNovidades);
-
-        txt_area_atualizacao.setColumns(20);
-        txt_area_atualizacao.setRows(5);
-        jScrollPane4.setViewportView(txt_area_atualizacao);
-
-        javax.swing.GroupLayout painelAtualizacaoLayout = new javax.swing.GroupLayout(painelAtualizacao);
-        painelAtualizacao.setLayout(painelAtualizacaoLayout);
-        painelAtualizacaoLayout.setHorizontalGroup(
-            painelAtualizacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelAtualizacaoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 482, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        painelAtualizacaoLayout.setVerticalGroup(
-            painelAtualizacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(painelAtualizacaoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        TabbedPaneInicio.addTab("NOVIDADES", painelAtualizacao);
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 494, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 303, Short.MAX_VALUE)
-        );
-
-        TabbedPaneInicio.addTab("A'NOTAS", jPanel1);
 
         javax.swing.GroupLayout painelInicialLayout = new javax.swing.GroupLayout(painelInicial);
         painelInicial.setLayout(painelInicialLayout);
         painelInicialLayout.setHorizontalGroup(
             painelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelInicialLayout.createSequentialGroup()
-                .addContainerGap(123, Short.MAX_VALUE)
-                .addComponent(TabbedPaneInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 494, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(123, Short.MAX_VALUE))
             .addGroup(painelInicialLayout.createSequentialGroup()
-                .addGap(193, 193, 193)
-                .addComponent(lbl_bemVindo)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(painelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(painelInicialLayout.createSequentialGroup()
+                        .addGap(193, 193, 193)
+                        .addComponent(lbl_bemVindo))
+                    .addGroup(painelInicialLayout.createSequentialGroup()
+                        .addGap(128, 128, 128)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(137, Short.MAX_VALUE))
         );
         painelInicialLayout.setVerticalGroup(
             painelInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelInicialLayout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addComponent(lbl_bemVindo, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(TabbedPaneInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(107, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         painelInicial.setVisible(true);
@@ -786,10 +773,7 @@ public class TelaMenuInicial extends javax.swing.JFrame {
         
         // colocando as informações no array data
         for(int x=0; x< lista.size();x++){
-            data[0] = lista.get(x)[0];
-            data[1] = lista.get(x)[1];
-            data[2] = lista.get(x)[2];
-            data[3] = lista.get(x)[3];
+            for (int z=0; z<data.length;z++){data[z] = lista.get(x)[z];}
             dtm.addRow(data);
         }
     }
@@ -927,7 +911,7 @@ public class TelaMenuInicial extends javax.swing.JFrame {
         
         String[][] colunasTb = {
             //colunas correspondencia
-            {"ID", "ID DESTINATÁRIO", "TIPO DE CORRESPONDENCIA", "DATA DE RECEBIMENTO"},
+            {"ID", "ID DESTINATÁRIO", "TIPO DE CORRESPONDENCIA", "NOME DO ENTREGADOR"},
             // colunas prestador de serviços
             {"ID", "CPF", "NOME", "CONTATO"},
             // colunas serviços
@@ -936,8 +920,7 @@ public class TelaMenuInicial extends javax.swing.JFrame {
             // colunas agenda
             {"ID", "COMPROMISSO"},
             // colunas residentes
-            {"ID", "CASA", "CPF", "PROPRIETÁRIO", "CONTATO"}
-               
+            {"ID", "CASA", "CPF", "PROPRIETÁRIO", "CONTATO"}    
         };
         String tabela = "";
         int tam=0, indexColunasTab=0;
@@ -974,7 +957,7 @@ public class TelaMenuInicial extends javax.swing.JFrame {
         // criando o array de colunas que aparecerão na tabela e add valores nele
         String[] coluna = new String[tam];
         coluna = colunasTb[indexColunasTab];
-        
+
         switch (this.ComboBox_tipo_pesquisa.getSelectedIndex()){
             case 0: // busca exata
                 String[] param = {this.colunas[indexColunasTab][this.Combobox_colunasConsulta.getSelectedIndex()]};
@@ -1118,6 +1101,39 @@ public class TelaMenuInicial extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_ComboBoxNovaInsercaoActionPerformed
 
+    private void btn_salvar_anotacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_salvar_anotacaoActionPerformed
+
+        LocalDateTime data_e_hora = LocalDateTime.now();
+        String coiso = this.txtArea_anotacao.getText();
+        // formatação da string e adição de data e hora formatada para String
+        coiso +="\n^"+(String)data_e_hora.format(DateTimeFormatter.ISO_DATE_TIME).replace("T", " ")+"\n\n";
+        
+        try {
+            // escrevendo informações no arquivo.txt no método WRITE (inserção com reescrita total)
+            Files.write(this.arquivoAnotacao, coiso.getBytes(), StandardOpenOption.WRITE);
+            JOptionPane.showMessageDialog(null, "SALVO COM SUCESSO!");
+        }
+        catch (Exception e) {
+            System.out.println("erro: "+e);
+            JOptionPane.showMessageDialog(null, "UM ERRO OCORREU!\nNÃO FOI POSSÍVEL SALVAR.");
+        }
+    }//GEN-LAST:event_btn_salvar_anotacaoActionPerformed
+
+    private void btn_historicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_historicoActionPerformed
+        try {
+            List<String> listinha = Files.readAllLines(this.arquivoAnotacao); // percorrendo linhas do arquivo
+            String lista2="";
+            for (String e:listinha){
+                lista2+=e+"\n";
+            }
+            this.txtArea_anotacao.setText(lista2);
+        } 
+        catch (IOException ex) {
+            Logger.getLogger(TelaMenuInicial.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "UM ERRO OCORREU!\nNÃO FOI POSSÍVEL RETOMAR\nAS ANOTAÇÕES.");
+        }
+    }//GEN-LAST:event_btn_historicoActionPerformed
+
   
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -1160,13 +1176,14 @@ public class TelaMenuInicial extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> Combobox_colunasConsulta;
     private javax.swing.JMenuBar MenuBar;
     private javax.swing.JScrollPane ScrollPaneTabela;
-    private javax.swing.JTabbedPane TabbedPaneInicio;
     private javax.swing.JTabbedPane TabbedPaneOpcoes;
     private javax.swing.JButton btnAlarme;
     private javax.swing.JButton btnOutros;
     private javax.swing.JButton btnPrintar;
     private javax.swing.JButton btn_Inserir;
+    private javax.swing.JButton btn_historico;
     private javax.swing.JButton btn_pesquise;
+    private javax.swing.JButton btn_salvar_anotacao;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
@@ -1179,10 +1196,9 @@ public class TelaMenuInicial extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
@@ -1199,19 +1215,14 @@ public class TelaMenuInicial extends javax.swing.JFrame {
     private javax.swing.JRadioButtonMenuItem menuBarRadio2;
     private javax.swing.JPanel painel1;
     private javax.swing.JPanel painel2;
-    private javax.swing.JPanel painelAtivReccentes;
-    private javax.swing.JPanel painelAtualizacao;
     private javax.swing.JPanel painelInicial;
-    private javax.swing.JPanel painelNovidades;
     private javax.swing.JPanel painel_inserirCorrespondencia;
     private javax.swing.JPanel painel_inserirPrestador;
     private javax.swing.JPanel painel_inserirResidente;
     private javax.swing.JPanel subPanelConsultar;
     private javax.swing.JPanel subPanelInserir;
     private javax.swing.JTable tabela1;
-    private javax.swing.JTextArea txt_area_ativRecentes;
-    private javax.swing.JTextArea txt_area_atualizacao;
-    private javax.swing.JTextArea txt_area_novidades;
+    private javax.swing.JTextArea txtArea_anotacao;
     private javax.swing.JTextField txt_filtros_consulta;
     private javax.swing.JTextField txt_inserir_contato_prestador;
     private javax.swing.JTextField txt_inserir_contato_residente;
