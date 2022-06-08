@@ -1,7 +1,6 @@
 package GUI;
 
 import DAO.ManipuladorDB;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -142,7 +141,7 @@ public class TelaMenuInicial extends javax.swing.JFrame {
         lblCameras = new javax.swing.JLabel();
         lblTelaDeCameras = new javax.swing.JLabel();
         btnAlarme = new javax.swing.JButton();
-        btnOutros = new javax.swing.JButton();
+        btn_outros_botoes_talvez = new javax.swing.JButton();
         btnPrintar = new javax.swing.JButton();
         lblFundin = new javax.swing.JLabel();
         MenuBar = new javax.swing.JMenuBar();
@@ -310,6 +309,12 @@ public class TelaMenuInicial extends javax.swing.JFrame {
 
         CheckBox_inserir_cpf_entregador.setFont(new java.awt.Font("Rockwell", 0, 12)); // NOI18N
         CheckBox_inserir_cpf_entregador.setText("CPF ENTREGADOR");
+
+        txt_inserir_desc_correspondencia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_inserir_desc_correspondenciaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout painel_inserirCorrespondenciaLayout = new javax.swing.GroupLayout(painel_inserirCorrespondencia);
         painel_inserirCorrespondencia.setLayout(painel_inserirCorrespondenciaLayout);
@@ -641,7 +646,13 @@ public class TelaMenuInicial extends javax.swing.JFrame {
             }
         });
 
-        btnOutros.setText("OUTROS BOTÕES, TALVEZ");
+        btn_outros_botoes_talvez.setText("OUTROS BOTÕES, TALVEZ");
+        btn_outros_botoes_talvez.setToolTipText("OUTROS BOTÕES, TALVEZ");
+        btn_outros_botoes_talvez.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_outros_botoes_talvezActionPerformed(evt);
+            }
+        });
 
         btnPrintar.setText("PRINTAR");
         btnPrintar.addActionListener(new java.awt.event.ActionListener() {
@@ -667,7 +678,7 @@ public class TelaMenuInicial extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(btnPrintar)
                                 .addGap(18, 18, 18)
-                                .addComponent(btnOutros, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(btn_outros_botoes_talvez, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(lblTelaDeCameras))))
                 .addContainerGap(56, Short.MAX_VALUE))
         );
@@ -682,7 +693,7 @@ public class TelaMenuInicial extends javax.swing.JFrame {
                 .addGroup(painel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnPrintar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnAlarme, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnOutros, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btn_outros_botoes_talvez, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -743,19 +754,21 @@ public class TelaMenuInicial extends javax.swing.JFrame {
 
     // métodos criados
     private void setPaineisInvisiveis(){
+        // seta visibilidade como false
         this.painelInicial.setVisible(false);
         this.painel2.setVisible(false);
         this.painel1.setVisible(false);
     }
   
     private void setSubPaineisInsercaoInvisiveis(){
+        // seta visibilidade como false
         this.painel_inserirCorrespondencia.setVisible(false);
         this.painel_inserirPrestador.setVisible(false);
         this.painel_inserirResidente.setVisible(false);
     }
     
     private void colocarNaTabela(String tabela,String[] colunas){
-        
+        // criando modelo padrão da tabela e outras vars importantes
         DefaultTableModel dtm = (DefaultTableModel) this.tabela1.getModel();
         ArrayList<Object[]> lista;
         Object[] data = new Object[colunas.length];
@@ -779,7 +792,7 @@ public class TelaMenuInicial extends javax.swing.JFrame {
     }
     
     private void colocarNaTabelaAdv(String tabela,String[] colunas,String param[],String valor[]){
-        
+        // criando vars
         DefaultTableModel dtm = (DefaultTableModel) this.tabela1.getModel();
         ArrayList<Object[]> lista;
         Object[] data = new Object[colunas.length];
@@ -793,6 +806,7 @@ public class TelaMenuInicial extends javax.swing.JFrame {
             dtm.addColumn(colunas[x]);
         }
 
+        // realizando consulta
         lista = dbm.consultarDadosAdv(tabela, param, valor);
         
         // add info no data
@@ -803,7 +817,7 @@ public class TelaMenuInicial extends javax.swing.JFrame {
     }
 
     private void colocarNaTabelaAdv(String tabela,String[] colunas,String param[],String valor[], boolean like){
-        
+        // criando vars
         DefaultTableModel dtm = (DefaultTableModel) this.tabela1.getModel();
         ArrayList<Object[]> lista;
         Object[] data = new Object[colunas.length];
@@ -817,6 +831,7 @@ public class TelaMenuInicial extends javax.swing.JFrame {
             dtm.addColumn(colunas[x]);
         }
 
+        // realizando consulta avançada
         lista = dbm.consultarDadosAdv(tabela, param, valor, true);
         
         // add info no data
@@ -827,6 +842,8 @@ public class TelaMenuInicial extends javax.swing.JFrame {
     }
 
     private void limparInfoInsercoes(){
+        
+        // limpando texto dos txt_fields da aba de inserção
         this.txt_inserir_contato_prestador.setText("");
         this.txt_inserir_contato_residente.setText("");
         this.txt_inserir_cpf_entregador_correspondencia.setText("");
@@ -868,23 +885,23 @@ public class TelaMenuInicial extends javax.swing.JFrame {
         
         // adicionando nova lista de parametros
         switch(this.ComboBoxTabelas.getSelectedIndex()){
-            case 0:
+            case 0: // correspondência
                 for (int x=0; x< this.colunas[0].length;x++){
                     this.Combobox_colunasConsulta.addItem(this.colunas[0][x].replace("_correspondencia", "").replace("_", " "));}
                 break;
-            case 1:
+            case 1: // prestador de serviços
                 for (int x=0; x< this.colunas[1].length;x++){
                     this.Combobox_colunasConsulta.addItem(this.colunas[1][x].replace("_prestador", "").replace("_", " "));}
                 break;
-            case 2:
+            case 2: // serviços
                 for (int x=0; x< this.colunas[2].length;x++){
                     this.Combobox_colunasConsulta.addItem(this.colunas[2][x].replace("_servico", "").replace("_", " "));}
                 break;
-            case 3:
+            case 3: // agenda
                 for (int x=0; x< this.colunas[3].length;x++){
                     this.Combobox_colunasConsulta.addItem(this.colunas[3][x].replace("_agenda", "").replace("_", " "));}
                 break;
-            case 4:
+            case 4: // residentes
                 for (int x=0; x< this.colunas[4].length;x++){
                     this.Combobox_colunasConsulta.addItem(this.colunas[4][x].replace("_residente", "").replace("_", " "));}
                 break;
@@ -907,8 +924,8 @@ public class TelaMenuInicial extends javax.swing.JFrame {
     // consulta
     private void btn_pesquiseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pesquiseActionPerformed
         
+        // criando vars
         DefaultTableModel dtm = (DefaultTableModel) this.tabela1.getModel();
-        
         String[][] colunasTb = {
             //colunas correspondencia
             {"ID", "ID DESTINATÁRIO", "TIPO DE CORRESPONDENCIA", "NOME DO ENTREGADOR"},
@@ -995,13 +1012,16 @@ public class TelaMenuInicial extends javax.swing.JFrame {
 
     // inserção
     private void btn_InserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_InserirActionPerformed
+        // criando vars
         String tabela="";
         ArrayList<String> parametros = new ArrayList();
         ArrayList<String> valores = new ArrayList();
         
+        // analisando qual o index seecionado
         switch (this.ComboBoxNovaInsercao.getSelectedIndex()){
             case 1: // prestador
                 
+                // add parametros e valores às respectivas ArrayLists
                 parametros.add(this.colunas[1][2]); // nome prestador
                 parametros.add(this.colunas[1][1]); // cpf prestador
                 parametros.add(this.colunas[1][3]); // contato prestador
@@ -1015,6 +1035,7 @@ public class TelaMenuInicial extends javax.swing.JFrame {
                 
             case 0: // correspondencia
                 
+                // add parametros e valores às respectivas ArrayLists
                 parametros.add(this.colunas[0][1]); // id morador
                 parametros.add(this.colunas[0][2]); // descrição da correspondência
                 
@@ -1034,11 +1055,12 @@ public class TelaMenuInicial extends javax.swing.JFrame {
                 break;
                 
             case 2: // residente
+                
+                // add parametros e valores às respectivas ArrayLists
                 parametros.add(this.colunas[4][1]); // casa residente
                 parametros.add(this.colunas[4][2]); // cpf residente
                 parametros.add(this.colunas[4][3]); // nome residente
                 parametros.add(this.colunas[4][4]); // contato residente
-                
                 
                 valores.add(this.txt_inserir_id_casa_residente.getText());
                 valores.add(this.txt_inserir_cpf_residente.getText());
@@ -1047,11 +1069,12 @@ public class TelaMenuInicial extends javax.swing.JFrame {
                 
                 tabela = "tb_residente";
                 break;
-                
+            
             default:
                 break;
         }
         
+        // passando valores e params de arraylist
         String[] param = new String[parametros.size()];
         String[] valor = new String[valores.size()];
         for (int x=0; x<parametros.size(); x++){param[x] = parametros.get(x);}
@@ -1134,6 +1157,14 @@ public class TelaMenuInicial extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_historicoActionPerformed
 
+    private void txt_inserir_desc_correspondenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_inserir_desc_correspondenciaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_inserir_desc_correspondenciaActionPerformed
+
+    private void btn_outros_botoes_talvezActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_outros_botoes_talvezActionPerformed
+        JOptionPane.showMessageDialog(null, "OUTROS BOTÕES, TALVEZ.");
+    }//GEN-LAST:event_btn_outros_botoes_talvezActionPerformed
+
   
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -1178,10 +1209,10 @@ public class TelaMenuInicial extends javax.swing.JFrame {
     private javax.swing.JScrollPane ScrollPaneTabela;
     private javax.swing.JTabbedPane TabbedPaneOpcoes;
     private javax.swing.JButton btnAlarme;
-    private javax.swing.JButton btnOutros;
     private javax.swing.JButton btnPrintar;
     private javax.swing.JButton btn_Inserir;
     private javax.swing.JButton btn_historico;
+    private javax.swing.JButton btn_outros_botoes_talvez;
     private javax.swing.JButton btn_pesquise;
     private javax.swing.JButton btn_salvar_anotacao;
     private javax.swing.JLabel jLabel1;

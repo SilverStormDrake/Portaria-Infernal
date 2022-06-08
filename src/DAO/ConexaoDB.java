@@ -11,9 +11,7 @@ public class ConexaoDB {
     public static Connection ConexaoDB(String banco){
         
         try {
-            //Class.forName("org.sqlite.JDBC");
             Connection con = DriverManager.getConnection(url+banco, usuario, senha);
-            //System.out.println("conexao bem sucedida!");
             return con;
             
         } catch (Exception e) {

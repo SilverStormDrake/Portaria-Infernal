@@ -517,6 +517,9 @@
                     <Component class="javax.swing.JTextField" name="txt_inserir_cpf_entregador_correspondencia">
                     </Component>
                     <Component class="javax.swing.JTextField" name="txt_inserir_desc_correspondencia">
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txt_inserir_desc_correspondenciaActionPerformed"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -959,7 +962,7 @@
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="btnPrintar" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="btnOutros" max="32767" attributes="0"/>
+                                  <Component id="btn_outros_botoes_talvez" max="32767" attributes="0"/>
                               </Group>
                               <Component id="lblTelaDeCameras" min="-2" max="-2" attributes="0"/>
                           </Group>
@@ -980,7 +983,7 @@
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="btnPrintar" max="32767" attributes="0"/>
                       <Component id="btnAlarme" max="32767" attributes="0"/>
-                      <Component id="btnOutros" min="-2" pref="50" max="-2" attributes="0"/>
+                      <Component id="btn_outros_botoes_talvez" min="-2" pref="50" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -1021,10 +1024,14 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAlarmeActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="btnOutros">
+        <Component class="javax.swing.JButton" name="btn_outros_botoes_talvez">
           <Properties>
             <Property name="text" type="java.lang.String" value="OUTROS BOT&#xd5;ES, TALVEZ"/>
+            <Property name="toolTipText" type="java.lang.String" value="OUTROS BOT&#xd5;ES, TALVEZ"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_outros_botoes_talvezActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnPrintar">
           <Properties>
